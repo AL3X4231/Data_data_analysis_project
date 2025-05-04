@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 import os
+from math import sqrt
 
 # Create render directory if it doesn't exist
 os.makedirs('render', exist_ok=True)
@@ -51,11 +52,14 @@ column_std = data_matrix.std()
 print("\nColumn Standard Deviations:")
 print(column_std)
 
+n = len(data_matrix)
+print(f"\nNumber of observations (n): {n}")
+
 # Create the centered data matrix (Xc)
 # Subtract the mean of each column from each value in that column
 centered_matrix = data_matrix.copy()
 for col in centered_matrix.columns:
-    centered_matrix[col] = centered_matrix[col] - column_means[col]
+    centered_matrix[col] = (centered_matrix[col] - column_means[col]) / sqrt(n)
 
 # Print the centered data matrix Xc
 print("\nCentered Data Matrix (Xc):")
@@ -74,7 +78,6 @@ print(centered_reduced_matrix)
 
 # Calculate the variance-covariance matrix (Σ)
 # Formula: Σ = (1/n) * Xc^T * Xc where n is the number of observations
-n = len(data_matrix)
 variance_covariance_matrix = centered_matrix.T.dot(centered_matrix) # / n
 
 # Print the variance-covariance matrix Σ
